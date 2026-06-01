@@ -1,10 +1,20 @@
 ---
-theme: seriph
-class: text-center
+theme: "@slidev/theme-seriph"
 transition: slide-up
-comark: true
+layout: intro
+class: size-full flex
 ---
 
-# Welcome to Slidev
+# Simulação de Monte Carlo
 
-<PoweredBySlidev mt-10 />
+<h2 class="text-xl font-bold">Alunos:</h2>
+<ul>
+  <li>Henrique Maia Cardosa</li>
+  <li>João Miguel de Castro Menna</li>
+  <li>João Pedro Medeiros Izidoro</li>
+  <li>Ricardo Gabriel Fialho Santos</li>
+</ul>
+
+---
+
+# Slidev
