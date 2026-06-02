@@ -8,10 +8,12 @@
     "export": "slidev export"
   },
   "dependencies": {
-    "@slidev/cli": "^52.15.2",
+    "@slidev/cli": "^51.0.0",
     "@slidev/theme-apple-basic": "^0.25.1",
     "@slidev/theme-seriph": "^0.25.0",
-    "vue": "^3.5.33"
+    "chart.js": "^4.5.1",
+    "vue": "^3.5.33",
+    "vue-chartjs": "^5.3.3"
   },
   "devDependencies": {
     "sass": "^1.100.0",
