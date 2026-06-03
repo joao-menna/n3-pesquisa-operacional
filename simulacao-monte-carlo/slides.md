@@ -61,27 +61,25 @@ layout: default
 
 # Centro de Conservacao de Fenix-do-Cerrado
 
-<div class="text-sm opacity-85 mb-2">
-  Objetivo: testar a politica <strong>(s, Q)</strong> para equilibrar custo e nivel de servico em 52 semanas.
+<div class="opacity-85 mb-2">
+  Objetivo: testar a política <strong>(s, Q)</strong> para equilibrar custo e nível de serviço em 52 semanas.
 </div>
 
 <div class="grid grid-cols-2 gap-4 text-sm mb-3">
-  <div class="rounded-lg border border-zinc-300 bg-zinc-50 p-3">
-    <h3 class="font-bold mb-1">Incertezas modeladas</h3>
+  <Card title="Incertezas modeladas">
     <ul>
       <li>Demanda semanal ~ Poisson (&lambda; = 3)</li>
       <li>Lead time ~ Triangular (1, 2, 4) semanas</li>
       <li>Custos: estoque R$200, falta R$1000, pedido R$500</li>
     </ul>
-  </div>
-  <div class="rounded-lg border border-zinc-300 bg-zinc-50 p-3">
-    <h3 class="font-bold mb-1">Saidas da simulacao</h3>
+  </Card>
+  <Card title="Saídas da simulação">
     <ul>
-      <li>Custo medio, mediana e risco P95</li>
-      <li>Nivel de servico (% semanas sem falta)</li>
-      <li>Distribuicao de custos anuais</li>
+      <li>Custo médio, mediana e risco P95</li>
+      <li>Nível de serviço (% semanas sem falta)</li>
+      <li>Distribuição de custos anuais</li>
     </ul>
-  </div>
+  </Card>
 </div>
 
 ---
@@ -89,4 +87,4 @@ title: "Simulação"
 transition: slide-up
 ---
 
-<MonteCarloLive />
+<AnimalsMonteCarloLive />

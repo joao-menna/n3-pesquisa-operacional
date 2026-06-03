@@ -22,6 +22,51 @@ ChartJS.register(
   Legend,
 )
 
+const presets = [
+  {
+    name: "Base",
+    numSimulations: 10_000,
+    numWeeks: 52,
+    initialInventory: 10,
+    s: 4,
+    q: 6,
+    holdingCostPerUnit: 200,
+    stockoutCostPerUnit: 1000,
+    orderCostFixed: 500,
+    poissonLambda: 3,
+    histogramBins: 40,
+    seed: 42,
+  },
+  {
+    name: "Arriscado",
+    numSimulations: 10_000,
+    numWeeks: 52,
+    initialInventory: 10,
+    s: 4,
+    q: 6,
+    holdingCostPerUnit: 200,
+    stockoutCostPerUnit: 1500,
+    orderCostFixed: 500,
+    poissonLambda: 4.5,
+    histogramBins: 40,
+    seed: 42,
+  },
+  {
+    name: "Conservador",
+    numSimulations: 10_000,
+    numWeeks: 52,
+    initialInventory: 10,
+    s: 4,
+    q: 6,
+    holdingCostPerUnit: 200,
+    stockoutCostPerUnit: 500,
+    orderCostFixed: 500,
+    poissonLambda: 1.5,
+    histogramBins: 40,
+    seed: 42,
+  },
+]
+
 const numSimulations = ref(10_000)
 const numWeeks = ref(52)
 const initialInventory = ref(10)
@@ -327,46 +372,78 @@ function currency(value: number) {
     maximumFractionDigits: 0,
   })
 }
+
+function setPreset(preset: typeof presets[number]) {
+  numSimulations.value = preset.numSimulations
+  numWeeks.value = preset.numWeeks
+  initialInventory.value = preset.initialInventory
+  s.value = preset.s
+  q.value = preset.q
+  holdingCostPerUnit.value = preset.holdingCostPerUnit
+  stockoutCostPerUnit.value = preset.stockoutCostPerUnit
+  orderCostFixed.value = preset.orderCostFixed
+  poissonLambda.value = preset.poissonLambda
+  histogramBins.value = preset.histogramBins
+  seed.value = preset.seed
+}
+
 </script>
 
 <template>
   <div class="live-card">
-    <div class="controls">
-      <h3>Simulação Monte Carlo ao vivo</h3>
-      <p>
-        Política de estoque <strong>(s, Q)</strong> com demanda Poisson e lead time Triangular.
-      </p>
+    <div class="flex flex-col gap-4">
+      <Card>
+        <div class="flex justify-between items-center gap-4">
+          <span>Presets:</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="preset in presets"
+              :key="preset.name"
+              class="px-3 py-1 rounded bg-gradient-to-r from-teal-600 to-cyan-500 text-white text-sm"
+              @click="setPreset(preset)"
+            >
+              {{ preset.name }}
+            </button>
+          </div>
+        </div>
+      </Card>
+      <div class="controls">
+        <h3>Simulação Monte Carlo ao vivo</h3>
+        <p>
+          Política de estoque <strong>(s, Q)</strong> com demanda Poisson e lead time Triangular.
+        </p>
 
-      <div class="grid">
-        <label>Simulações <input v-model.number="numSimulations" type="number" min="100" step="100" /></label>
-        <label>Semanas <input v-model.number="numWeeks" type="number" min="4" max="104" /></label>
-        <label>Estoque inicial <input v-model.number="initialInventory" type="number" min="0" /></label>
-        <label>Ponto de pedido s <input v-model.number="s" type="number" min="0" /></label>
-        <label>Quantidade Q <input v-model.number="q" type="number" min="1" /></label>
-        <label>Lambda demanda <input v-model.number="poissonLambda" type="number" min="0.1" step="0.1" /></label>
-        <label>Custo estoque (R$) <input v-model.number="holdingCostPerUnit" type="number" min="0" step="10" /></label>
-        <label>Custo falta (R$) <input v-model.number="stockoutCostPerUnit" type="number" min="0" step="50" /></label>
-        <label>Custo pedido (R$) <input v-model.number="orderCostFixed" type="number" min="0" step="50" /></label>
-        <label>Bins histograma <input v-model.number="histogramBins" type="number" min="10" max="80" /></label>
-        <label>Seed <input v-model.number="seed" type="number" min="1" step="1" /></label>
-      </div>
+        <div class="grid">
+          <label>Simulações <input v-model.number="numSimulations" type="number" min="100" step="100" /></label>
+          <label>Semanas <input v-model.number="numWeeks" type="number" min="4" max="104" /></label>
+          <label>Estoque inicial <input v-model.number="initialInventory" type="number" min="0" /></label>
+          <label>Ponto de pedido s <input v-model.number="s" type="number" min="0" /></label>
+          <label>Quantidade Q <input v-model.number="q" type="number" min="1" /></label>
+          <label>Lambda demanda <input v-model.number="poissonLambda" type="number" min="0.1" step="0.1" /></label>
+          <label>Custo estoque (R$) <input v-model.number="holdingCostPerUnit" type="number" min="0" step="10" /></label>
+          <label>Custo falta (R$) <input v-model.number="stockoutCostPerUnit" type="number" min="0" step="50" /></label>
+          <label>Custo pedido (R$) <input v-model.number="orderCostFixed" type="number" min="0" step="50" /></label>
+          <label>Bins histograma <input v-model.number="histogramBins" type="number" min="10" max="80" /></label>
+          <label>Seed <input v-model.number="seed" type="number" min="1" step="1" /></label>
+        </div>
 
-      <button :disabled="isRunning" class="run-btn" @click="runSimulation">
-        {{ isRunning ? 'Rodando...' : 'Rodar simulação' }}
-      </button>
+        <button :disabled="isRunning" class="run-btn" @click="runSimulation">
+          {{ isRunning ? 'Rodando...' : 'Rodar simulação' }}
+        </button>
 
-      <div class="progress-wrap" v-if="isRunning || completedSimulations > 0">
-        <div class="progress-bar" :style="{ width: `${progress}%` }"></div>
-      </div>
-      <small v-if="isRunning || completedSimulations > 0">
-        {{ completedSimulations.toLocaleString('pt-BR') }} / {{ numSimulations.toLocaleString('pt-BR') }} simulações
-      </small>
+        <div class="progress-wrap" v-if="isRunning || completedSimulations > 0">
+          <div class="progress-bar" :style="{ width: `${progress}%` }"></div>
+        </div>
+        <small v-if="isRunning || completedSimulations > 0">
+          {{ completedSimulations.toLocaleString('pt-BR') }} / {{ numSimulations.toLocaleString('pt-BR') }} simulações
+        </small>
 
-      <div class="kpis" v-if="totalCosts.length > 0">
-        <div><span>Custo médio anual:</span> <strong>{{ currency(meanCost) }}</strong></div>
-        <div><span>Mediana do custo:</span> <strong>{{ currency(medianCost) }}</strong></div>
-        <div><span>P95 de custo:</span> <strong>{{ currency(p95Cost) }}</strong></div>
-        <div><span>Nível de serviço médio:</span> <strong>{{ meanServiceLevel.toFixed(2) }}%</strong></div>
+        <div class="kpis" v-if="totalCosts.length > 0">
+          <div><span>Custo médio anual:</span> <strong>{{ currency(meanCost) }}</strong></div>
+          <div><span>Mediana do custo:</span> <strong>{{ currency(medianCost) }}</strong></div>
+          <div><span>P95 de custo:</span> <strong>{{ currency(p95Cost) }}</strong></div>
+          <div><span>Nível de serviço médio:</span> <strong>{{ meanServiceLevel.toFixed(2) }}%</strong></div>
+        </div>
       </div>
     </div>
 
