@@ -199,6 +199,10 @@ async function runSimulation() {
   progress.value = 0
   completedSimulations.value = 0
 
+  if (seed.value === 0) {
+    seed.value = Math.floor(Math.random() * 0xFFFFFFFF) + 1
+  }
+
   const random = mulberry32(seed.value)
   const currentCosts: number[] = []
   const currentServiceLevels: number[] = []
@@ -391,7 +395,7 @@ function setPreset(preset: typeof presets[number]) {
 
 <template>
   <div class="live-card">
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 h-full">
       <Card>
         <div class="flex justify-between items-center gap-4">
           <span>Presets:</span>
@@ -424,7 +428,7 @@ function setPreset(preset: typeof presets[number]) {
           <label>Custo falta (R$) <input v-model.number="stockoutCostPerUnit" type="number" min="0" step="50" /></label>
           <label>Custo pedido (R$) <input v-model.number="orderCostFixed" type="number" min="0" step="50" /></label>
           <label>Bins histograma <input v-model.number="histogramBins" type="number" min="10" max="80" /></label>
-          <label>Seed <input v-model.number="seed" type="number" min="1" step="1" /></label>
+          <label>Seed <input v-model.number="seed" type="number" min="0" step="1" /></label>
         </div>
 
         <button :disabled="isRunning" class="run-btn" @click="runSimulation">
@@ -467,7 +471,7 @@ function setPreset(preset: typeof presets[number]) {
   gap: 14px;
   width: 100%;
   max-width: 100%;
-  max-height: 60vh;
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 4px;
@@ -560,7 +564,7 @@ input {
 
 .charts {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  /* grid-template-rows: 1fr 1fr; */
   gap: 12px;
   min-width: 0;
 }
@@ -576,26 +580,11 @@ input {
 .panel h4 {
   margin: 0 0 8px;
   font-size: 0.95rem;
+  max-height: 100%;
 }
 
 .canvas-wrap {
-  height: 195px;
+  height: 310px;
   width: 100%;
-}
-
-@media (max-width: 1100px) {
-  .live-card {
-    grid-template-columns: 1fr;
-    max-height: 66vh;
-  }
-
-  .charts {
-    grid-template-rows: auto;
-    grid-template-columns: 1fr;
-  }
-
-  .canvas-wrap {
-    height: 220px;
-  }
 }
 </style>

@@ -13,7 +13,7 @@ defineProps({
     <h2 v-if="title" class="text-xl font-semibold mb-2">{{ title }}</h2>
     <div class="flex flex-col gap-4">
       <slot></slot>
-      <img src="/assets/catolica.png" :alt="title" class="w-full h-64 object-cover rounded-md">
+      <slot name="image"></slot>
     </div>
   </div>
 </template>
