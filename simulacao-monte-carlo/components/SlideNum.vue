@@ -5,7 +5,7 @@
         </span>
         <span class="text-gray-500">/</span>
         <span class="text-gray-500">
-            13
+            12
         </span>
     </div>
 </template>

@@ -29,25 +29,6 @@ transition: slide-up
 
 <SlideNum />
 
-# O que é Simulação de Monte Carlo?
-
-- Técnica de modelagem e análise 
-- Utiliza a geração de números aleatórios para simular o comportamento de sistemas complexos.
-- Ela é amplamente utilizada em diversas áreas para avaliar riscos, tomar decisões e prever resultados futuros.
-
-<br />
-<br />
-
-# Nome "Monte Carlo"
-
-- O nome "Monte Carlo" é uma referência à cidade de Monte Carlo, conhecida por seus cassinos e jogos de azar, onde a aleatoriedade desempenha um papel fundamental.
-
----
-transition: slide-up
----
-
-<SlideNum />
-
 # Problemas a serem resolvidos
 
 <div class="flex gap-4">
